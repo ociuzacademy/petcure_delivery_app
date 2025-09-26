@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class AppPalette {
-  static const Color firstColor = Color(0xFF9F84BD);
-  static const Color secondColor = Color(0xFFC09BD8);
-  static const Color thirdColor = Color(0xFFEBC3DB);
-  static const Color fourthColor = Color(0xFFEDE3E9);
+  static const Color firstColor = Color(0xFF6B3F69);
+  static const Color secondColor = Color(0xFF8D5F8C);
+  static const Color thirdColor = Color(0xFFA376A2);
+  static const Color fourthColor = Color(0xFFDDC3C3);
 
   static const Color whiteColor = Colors.white;
   static const Color blackColor = Colors.black;
