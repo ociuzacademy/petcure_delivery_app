@@ -44,11 +44,11 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
           indicatorColor: AppPalette.secondColor,
-          backgroundColor: AppPalette.thirdColor,
+          backgroundColor: AppPalette.fourthColor,
           iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
             if (states.contains(WidgetState.selected)) {
               return IconThemeData(
-                color: AppPalette.thirdColor,
+                color: AppPalette.fourthColor,
               ); // Icon color for selected item
             }
             return IconThemeData(
@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
               );
             }
             return const TextStyle(
-              color: AppPalette.blackColor, // Text color for unselected items
+              color: AppPalette.firstColor, // Text color for unselected items
               fontWeight: FontWeight.normal,
             );
           }),
@@ -97,7 +97,7 @@ class _HomePageState extends State<HomePage> {
         children: _appBodies,
       ),
       drawer: Drawer(
-        backgroundColor: AppPalette.thirdColor,
+        backgroundColor: AppPalette.fourthColor,
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: [
@@ -106,23 +106,11 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'PetCure',
                 style: TextStyle(
-                  color: AppPalette.thirdColor,
+                  color: AppPalette.fourthColor,
                   fontWeight: FontWeight.bold,
                   fontSize: 40,
                 ),
               ),
-            ),
-            ListTile(
-              leading: Icon(Icons.history, color: AppPalette.firstColor),
-              title: const Text(
-                'Treatment History',
-                style: TextStyle(
-                  color: AppPalette.firstColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              onTap: () {},
             ),
             ListTile(
               leading: const Icon(Icons.logout, color: AppPalette.firstColor),

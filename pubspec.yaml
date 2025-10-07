@@ -38,6 +38,7 @@ dependencies:
   faker_dart: ^0.2.3
   url_launcher: ^6.3.2
   mobile_scanner: ^7.1.2
+  image_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:
