@@ -1,8 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:petcure_delivery_app/core/theme/app_palette.dart';
 
 import 'package:petcure_delivery_app/modules/home_module/widgets/profile_info_row.dart';
-import 'package:petcure_delivery_app/modules/home_module/widgets/profile_stat_card.dart';
 
 class ProfileWidget extends StatefulWidget {
   const ProfileWidget({super.key});
@@ -49,20 +50,27 @@ class _ProfileWidgetState extends State<ProfileWidget> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Header with avatar and basic info
               Row(
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.orange[100],
-                    child: Icon(
-                      Icons.delivery_dining,
-                      size: 30,
-                      color: Colors.orange[800],
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: 'https://avatar.iran.liara.run/public',
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.cover,
+                      progressIndicatorBuilder: (context, url, progress) =>
+                          CircularProgressIndicator(
+                            value: progress.progress,
+                            valueColor: const AlwaysStoppedAnimation<Color>(
+                              AppPalette.firstColor,
+                            ),
+                          ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
                   ),
-                  const SizedBox(width: 15),
-                  Expanded(
+                  SizedBox(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -72,24 +80,6 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                             fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
-                        ),
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.star,
-                              size: 16,
-                              color: Colors.amber[600],
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              '$rating • Pet Express Delivery Partner',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey[600],
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
@@ -136,87 +126,9 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
               const SizedBox(height: 20),
 
-              // Delivery Statistics
-              const Text(
-                'Delivery Statistics',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.blue,
-                ),
-              ),
-              const SizedBox(height: 12),
-
-              // Statistics Cards
-              Row(
-                children: [
-                  Expanded(
-                    child: ProfileStatCard(
-                      title: 'Total Deliveries',
-                      value: totalDeliveries.toString(),
-                      bgColor: Colors.blue[100]!,
-                      color: Colors.blue[800]!,
-                      icon: Icons.local_shipping,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ProfileStatCard(
-                      title: "Today's Deliveries",
-                      value: todaysDeliveries.toString(),
-                      bgColor: Colors.green[100]!,
-                      color: Colors.green[800]!,
-                      icon: Icons.today,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-
-              Row(
-                children: [
-                  Expanded(
-                    child: ProfileStatCard(
-                      title: 'Pending Deliveries',
-                      value: pendingDeliveries.toString(),
-                      bgColor: Colors.orange[100]!,
-                      color: Colors.orange[800]!,
-                      icon: Icons.pending_actions,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: ProfileStatCard(
-                      title: 'Customer Rating',
-                      value: rating.toString(),
-                      bgColor: Colors.purple[100]!,
-                      color: Colors.purple[800]!,
-                      icon: Icons.star,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 20),
-
               // Action Buttons
               Row(
                 children: [
-                  Expanded(
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // View today's deliveries
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blue,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 12),
-                      ),
-                      icon: const Icon(Icons.list_alt),
-                      label: const Text('Today\'s Route'),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: () {
@@ -224,10 +136,12 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                       },
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 12),
-                        side: const BorderSide(color: Colors.blue),
+                        side: const BorderSide(color: AppPalette.firstColor),
+                        backgroundColor: AppPalette.firstColor,
+                        foregroundColor: Colors.white,
                       ),
                       icon: const Icon(Icons.update),
-                      label: const Text('Update Status'),
+                      label: const Text('Update Profile'),
                     ),
                   ),
                 ],

@@ -3,4 +3,6 @@ class AppUrls {
   static const String deliveryUrl = '$baseUrl/delivery';
 
   static const String registerUrl = '$deliveryUrl/delivery_registration/';
+
+  static const String loginUrl = '$deliveryUrl/login/';
 }
