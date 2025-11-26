@@ -34,6 +34,8 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => RegisterBloc()),
         BlocProvider(create: (context) => LoginBloc()),
+        BlocProvider(create: (context) => DeliveryAgentProfileCubit()),
+        BlocProvider(create: (context) => UpdateProfileBloc()),
       ],
       child: MaterialApp(
         title: 'Petcure Delivery',

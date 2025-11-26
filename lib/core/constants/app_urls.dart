@@ -5,4 +5,7 @@ class AppUrls {
   static const String registerUrl = '$deliveryUrl/delivery_registration/';
 
   static const String loginUrl = '$deliveryUrl/login/';
+
+  static const String getAgentProfileUrl = '$deliveryUrl/view_profile/';
+  static const String updateProfileUrl = '$deliveryUrl/update_profile/';
 }

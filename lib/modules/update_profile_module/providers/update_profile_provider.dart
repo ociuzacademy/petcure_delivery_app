@@ -3,11 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petcure_delivery_app/modules/register_module/classes/delivery_agent_register_data.dart';
+import 'package:petcure_delivery_app/core/models/api_models/delivery_agent_profile_model.dart';
+import 'package:petcure_delivery_app/modules/update_profile_module/classes/update_agent_profile_data.dart';
 
-class RegisterProvider with ChangeNotifier {
+class UpdateProfileProvider with ChangeNotifier {
   // Form key
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  DeliveryAgentProfileModel? _agentProfile;
 
   // Text controllers
   final TextEditingController usernameController = TextEditingController();
@@ -27,17 +30,13 @@ class RegisterProvider with ChangeNotifier {
   File? _profileImage;
   File? _idCardImage;
 
-  // City selection
-  String? _selectedCity;
-  static const List<String> cities = ['Thrissur', 'Palakkad', 'Ernakulam'];
-
   // Getters
+  DeliveryAgentProfileModel? get agentProfile => _agentProfile;
   File? get profileImage => _profileImage;
   File? get idCardImage => _idCardImage;
-  String? get selectedCity => _selectedCity;
-  List<String> get availableCities => cities;
 
   // Setters
+
   void setProfileImage(File? image) {
     _profileImage = image;
     notifyListeners();
@@ -48,8 +47,13 @@ class RegisterProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedCity(String? city) {
-    _selectedCity = city;
+  void setProfileDataFromApi(DeliveryAgentProfileModel value) {
+    _agentProfile = value;
+    usernameController.text = value.username;
+    emailController.text = value.email;
+    phoneNumberController.text = value.phone;
+    passwordController.text = value.password;
+    addressController.text = value.address;
     notifyListeners();
   }
 
@@ -139,35 +143,47 @@ class RegisterProvider with ChangeNotifier {
     return formKey.currentState?.validate() ?? false;
   }
 
-  // Check if all required fields are filled
-  bool get isFormComplete {
-    return usernameController.text.isNotEmpty &&
-        emailController.text.isNotEmpty &&
-        phoneNumberController.text.isNotEmpty &&
-        passwordController.text.isNotEmpty &&
-        addressController.text.isNotEmpty &&
-        _selectedCity != null &&
-        _profileImage != null &&
-        _idCardImage != null;
-  }
-
   // delivery agent register data
-  DeliveryAgentRegisterData? validateRegisterData() {
+  UpdateAgentProfileData? validateUpdateProfileData() {
     unfocusAll();
-    if (isFormComplete) {
-      return DeliveryAgentRegisterData(
-        username: usernameController.text.trim(),
-        email: emailController.text.trim(),
-        phoneNumber: phoneNumberController.text.trim(),
-        password: passwordController.text.trim(),
-        address: addressController.text.trim(),
-        city: _selectedCity!,
-        profileImage: _profileImage!,
-        idCardImage: _idCardImage!,
-      );
-    } else {
+    if (validateForm()) {
       return null;
     }
+
+    final String username = usernameController.text.trim();
+    if (username.isEmpty) {
+      return null;
+    }
+
+    final String email = emailController.text.trim();
+    if (email.isEmpty) {
+      return null;
+    }
+
+    final String phoneNumber = phoneNumberController.text.trim();
+    if (phoneNumber.isEmpty) {
+      return null;
+    }
+
+    final String password = passwordController.text.trim();
+    if (password.isEmpty) {
+      return null;
+    }
+
+    final String address = addressController.text.trim();
+    if (address.isEmpty) {
+      return null;
+    }
+
+    return UpdateAgentProfileData(
+      address: address != _agentProfile!.address ? address : null,
+      email: email != _agentProfile!.email ? email : null,
+      idCardImage: _idCardImage,
+      password: password != _agentProfile!.password ? password : null,
+      phoneNumber: phoneNumber != _agentProfile!.phone ? phoneNumber : null,
+      profileImage: _profileImage,
+      username: username != _agentProfile!.username ? username : null,
+    );
   }
 
   // Clear all form data
@@ -179,7 +195,6 @@ class RegisterProvider with ChangeNotifier {
     addressController.clear();
     _profileImage = null;
     _idCardImage = null;
-    _selectedCity = null;
     notifyListeners();
   }
 

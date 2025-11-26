@@ -28,7 +28,7 @@ class AuthStorageFunctions {
     }
   }
 
-  static Future<int> getUserId() async {
+  static Future<int> getAgentId() async {
     try {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
       final int? userId = prefs.getInt(AuthStorageKeys.userId);
