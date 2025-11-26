@@ -3,13 +3,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petcure_delivery_app/modules/register_module/classes/delivery_agent_register_data.dart';
 
 class RegisterProvider with ChangeNotifier {
   // Form key
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   // Text controllers
-  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneNumberController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -30,14 +31,10 @@ class RegisterProvider with ChangeNotifier {
   String? _selectedCity;
   static const List<String> cities = ['Thrissur', 'Palakkad', 'Ernakulam'];
 
-  // Loading state
-  bool _isLoading = false;
-
   // Getters
   File? get profileImage => _profileImage;
   File? get idCardImage => _idCardImage;
   String? get selectedCity => _selectedCity;
-  bool get isLoading => _isLoading;
   List<String> get availableCities => cities;
 
   // Setters
@@ -53,11 +50,6 @@ class RegisterProvider with ChangeNotifier {
 
   void setSelectedCity(String? city) {
     _selectedCity = city;
-    notifyListeners();
-  }
-
-  void setLoading(bool loading) {
-    _isLoading = loading;
     notifyListeners();
   }
 
@@ -141,7 +133,7 @@ class RegisterProvider with ChangeNotifier {
 
   // Check if all required fields are filled
   bool get isFormComplete {
-    return fullNameController.text.isNotEmpty &&
+    return usernameController.text.isNotEmpty &&
         emailController.text.isNotEmpty &&
         phoneNumberController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
@@ -151,9 +143,27 @@ class RegisterProvider with ChangeNotifier {
         _idCardImage != null;
   }
 
+  // delivery agent register data
+  DeliveryAgentRegisterData? validateRegisterData() {
+    if (isFormComplete) {
+      return DeliveryAgentRegisterData(
+        username: usernameController.text.trim(),
+        email: emailController.text.trim(),
+        phoneNumber: phoneNumberController.text.trim(),
+        password: passwordController.text.trim(),
+        address: addressController.text.trim(),
+        city: _selectedCity!,
+        profileImage: _profileImage!,
+        idCardImage: _idCardImage!,
+      );
+    } else {
+      return null;
+    }
+  }
+
   // Clear all form data
   void clearForm() {
-    fullNameController.clear();
+    usernameController.clear();
     emailController.clear();
     phoneNumberController.clear();
     passwordController.clear();
@@ -161,13 +171,12 @@ class RegisterProvider with ChangeNotifier {
     _profileImage = null;
     _idCardImage = null;
     _selectedCity = null;
-    _isLoading = false;
     notifyListeners();
   }
 
   @override
   void dispose() {
-    fullNameController.dispose();
+    usernameController.dispose();
     emailController.dispose();
     phoneNumberController.dispose();
     passwordController.dispose();

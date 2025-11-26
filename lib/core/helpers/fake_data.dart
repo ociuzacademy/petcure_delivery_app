@@ -240,7 +240,7 @@ class FakeData {
     final Random random = Random();
     final List<Order> orders = [];
 
-    final List<OrderDeliveryStatus> statuses = OrderDeliveryStatus.values;
+    const List<OrderDeliveryStatus> statuses = OrderDeliveryStatus.values;
 
     for (int i = 0; i < count; i++) {
       // Generate random cart items for the order

@@ -10,7 +10,8 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 
-  static route() => MaterialPageRoute(builder: (context) => HomePage());
+  static MaterialPageRoute route() =>
+      MaterialPageRoute(builder: (context) => const HomePage());
 }
 
 class _HomePageState extends State<HomePage> {
@@ -22,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _appBodies = [OrdersTodayWidget(), ProfileWidget()];
+    _appBodies = [const OrdersTodayWidget(), const ProfileWidget()];
     super.initState();
   }
 
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('PetCure'),
+        title: const Text('PetCure'),
         titleTextStyle: const TextStyle(
           color: AppPalette.firstColor,
           fontSize: 25,
@@ -47,17 +48,17 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: AppPalette.fourthColor,
           iconTheme: WidgetStateProperty.resolveWith<IconThemeData?>((states) {
             if (states.contains(WidgetState.selected)) {
-              return IconThemeData(
+              return const IconThemeData(
                 color: AppPalette.fourthColor,
               ); // Icon color for selected item
             }
-            return IconThemeData(
+            return const IconThemeData(
               color: AppPalette.firstColor,
             ); // Icon color for unselected items
           }),
           labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
             if (states.contains(WidgetState.selected)) {
-              return TextStyle(
+              return const TextStyle(
                 color: AppPalette.firstColor, // Text color for selected item
                 fontWeight: FontWeight.bold,
               );
@@ -82,8 +83,8 @@ class _HomePageState extends State<HomePage> {
           selectedIndex: _currentPageIndex,
           // labelBehavior: ,
           destinations: const [
-            NavigationDestination(icon: Icon(Icons.vaccines), label: "Booking"),
-            NavigationDestination(icon: Icon(Icons.person), label: "Profile"),
+            NavigationDestination(icon: Icon(Icons.vaccines), label: 'Booking'),
+            NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
           ],
         ),
       ),
@@ -101,7 +102,7 @@ class _HomePageState extends State<HomePage> {
         child: ListView(
           padding: const EdgeInsets.all(0),
           children: [
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(color: AppPalette.firstColor),
               child: Text(
                 'PetCure',

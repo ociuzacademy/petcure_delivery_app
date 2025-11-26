@@ -12,7 +12,7 @@ class OrderDetailsPage extends StatefulWidget {
   final Order order;
   const OrderDetailsPage({super.key, required this.order});
 
-  static route({required Order order}) =>
+  static MaterialPageRoute route({required Order order}) =>
       MaterialPageRoute(builder: (context) => OrderDetailsPage(order: order));
 
   @override
@@ -50,7 +50,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
             onPressed: () {
               Navigator.push(context, ShopQRScannerPage.route());
             },
-            icon: Icon(Icons.qr_code),
+            icon: const Icon(Icons.qr_code),
           ),
         ],
       ),

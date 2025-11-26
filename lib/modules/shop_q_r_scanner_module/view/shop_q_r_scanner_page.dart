@@ -8,8 +8,8 @@ class ShopQRScannerPage extends StatefulWidget {
   @override
   State<ShopQRScannerPage> createState() => _ShopQRScannerPageState();
 
-  static route() =>
-      MaterialPageRoute(builder: (context) => ShopQRScannerPage());
+  static MaterialPageRoute route() =>
+      MaterialPageRoute(builder: (context) => const ShopQRScannerPage());
 }
 
 class _ShopQRScannerPageState extends State<ShopQRScannerPage> {
