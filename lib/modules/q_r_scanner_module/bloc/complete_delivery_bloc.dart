@@ -10,21 +10,21 @@ part 'complete_delivery_bloc.freezed.dart';
 class CompleteDeliveryBloc
     extends Bloc<CompleteDeliveryEvent, CompleteDeliveryState> {
   CompleteDeliveryBloc() : super(const CompleteDeliveryInitial()) {
-    on<CompleteDeliveryEvent>((event, emit) async {
-      await event.map(
-        started: (_) async {},
-        completingDelivery: (e) async {
-          emit(const CompleteDeliveryState.loading());
-          try {
-            final response = await QRScannerServices.confirmDelivery(
-              orderId: e.orderId,
-            );
-            emit(CompleteDeliveryState.success(response));
-          } catch (error) {
-            emit(CompleteDeliveryState.error(error.toString()));
-          }
-        },
+    on<_CompletingDelivery>(_onCompletingDelivery);
+  }
+
+  Future<void> _onCompletingDelivery(
+    _CompletingDelivery event,
+    Emitter<CompleteDeliveryState> emit,
+  ) async {
+    emit(const CompleteDeliveryState.loading());
+    try {
+      final response = await QRScannerServices.confirmDelivery(
+        orderId: event.orderId,
       );
-    });
+      emit(CompleteDeliveryState.success(response));
+    } catch (error) {
+      emit(CompleteDeliveryState.error(error.toString()));
+    }
   }
 }

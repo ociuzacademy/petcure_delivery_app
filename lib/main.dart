@@ -39,6 +39,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => OrderListCubit()),
         BlocProvider(create: (context) => OrderDetailsCubit()),
         BlocProvider(create: (context) => CompleteDeliveryBloc()),
+        BlocProvider(create: (context) => AuthBloc()),
       ],
       child: MaterialApp(
         title: 'Petcure Delivery',

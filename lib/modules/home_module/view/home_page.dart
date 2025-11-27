@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_delivery_app/core/exports/bloc_exports.dart';
 import 'package:petcure_delivery_app/core/theme/app_palette.dart';
+import 'package:petcure_delivery_app/modules/home_module/utils/home_page_helper.dart';
 import 'package:petcure_delivery_app/modules/home_module/widgets/orders_list_widget.dart';
 import 'package:petcure_delivery_app/modules/home_module/widgets/profile_widget.dart';
 import 'package:petcure_delivery_app/modules/login_module/view/login_page.dart';
+import 'package:petcure_delivery_app/widgets/loaders/overlay_loader.dart';
+import 'package:petcure_delivery_app/widgets/snackbars/custom_snack_bar.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -25,10 +30,6 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     _appBodies = [const OrdersListWidget(), const ProfileWidget()];
     super.initState();
-  }
-
-  void _logout() {
-    Navigator.pushAndRemoveUntil(context, LoginPage.route(), (route) => false);
   }
 
   @override
@@ -88,14 +89,42 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: PageView(
-        controller: _pageController,
-        onPageChanged: (index) {
-          setState(() {
-            _currentPageIndex = index;
-          });
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          switch (state) {
+            case AuthLoading _:
+              OverlayLoader.show(context, message: 'Logging out...');
+              break;
+            case LogoutSuccess _:
+              OverlayLoader.hide();
+              CustomSnackBar.showSuccess(
+                context,
+                message: 'Logged out successfully',
+              );
+              Navigator.pushAndRemoveUntil(
+                context,
+                LoginPage.route(),
+                (route) => false,
+              );
+              break;
+            case AuthError(:final errorMessage):
+              OverlayLoader.hide();
+              CustomSnackBar.showError(context, message: errorMessage);
+              break;
+            default:
+              OverlayLoader.hide();
+              break;
+          }
         },
-        children: _appBodies,
+        child: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _currentPageIndex = index;
+            });
+          },
+          children: _appBodies,
+        ),
       ),
       drawer: Drawer(
         backgroundColor: AppPalette.fourthColor,
@@ -123,7 +152,7 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 20,
                 ),
               ),
-              onTap: _logout,
+              onTap: () => HomePageHelper.logout(context),
             ),
           ],
         ),
