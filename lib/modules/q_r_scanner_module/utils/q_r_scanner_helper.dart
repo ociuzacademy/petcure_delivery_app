@@ -36,6 +36,12 @@ class QRScannerHelper {
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
                 final CompleteDeliveryBloc completeDeliveryBloc = context
                     .read<CompleteDeliveryBloc>();
                 completeDeliveryBloc.add(
@@ -43,12 +49,6 @@ class QRScannerHelper {
                 );
               },
               child: const Text('Confirm'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Cancel'),
             ),
           ],
         ),
