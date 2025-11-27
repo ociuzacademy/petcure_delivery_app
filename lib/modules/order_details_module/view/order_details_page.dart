@@ -7,7 +7,7 @@ import 'package:petcure_delivery_app/core/exports/bloc_exports.dart';
 import 'package:petcure_delivery_app/modules/order_details_module/utils/order_details_helper.dart';
 import 'package:petcure_delivery_app/modules/order_details_module/widgets/order_info_row.dart';
 import 'package:petcure_delivery_app/modules/order_details_module/widgets/order_product_item.dart';
-import 'package:petcure_delivery_app/modules/shop_q_r_scanner_module/view/shop_q_r_scanner_page.dart';
+import 'package:petcure_delivery_app/modules/q_r_scanner_module/view/q_r_scanner_page.dart';
 import 'package:petcure_delivery_app/widgets/custom_error_widget.dart';
 import 'package:petcure_delivery_app/widgets/loaders/custom_loading_widget.dart';
 
@@ -53,7 +53,7 @@ class _OrderDetailsPageState extends State<OrderDetailsPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(context, ShopQRScannerPage.route());
+              Navigator.push(context, QRScannerPage.route());
             },
             icon: const Icon(Icons.qr_code),
           ),
