@@ -1,55 +1,34 @@
 // To parse this JSON data, do
 //
-//     final deliveryOrderListModel = deliveryOrderListModelFromJson(jsonString);
+//     final orderDetailsModel = orderDetailsModelFromJson(jsonString);
 
 import 'dart:convert';
 
 import 'package:petcure_delivery_app/core/enums/delivery_status.dart';
 
-DeliveryOrderListModel deliveryOrderListModelFromJson(String str) =>
-    DeliveryOrderListModel.fromJson(json.decode(str));
+OrderDetailsModel orderDetailsModelFromJson(String str) =>
+    OrderDetailsModel.fromJson(json.decode(str));
 
-String deliveryOrderListModelToJson(DeliveryOrderListModel data) =>
+String orderDetailsModelToJson(OrderDetailsModel data) =>
     json.encode(data.toJson());
 
-class DeliveryOrderListModel {
-  final List<Order> onTheWayOrders;
-  final List<Order> deliveredOrders;
+class OrderDetailsModel {
+  final OrderDetails orderDetails;
 
-  const DeliveryOrderListModel({
-    required this.onTheWayOrders,
-    required this.deliveredOrders,
-  });
+  const OrderDetailsModel({required this.orderDetails});
 
-  DeliveryOrderListModel copyWith({
-    List<Order>? onTheWayOrders,
-    List<Order>? deliveredOrders,
-  }) => DeliveryOrderListModel(
-    onTheWayOrders: onTheWayOrders ?? this.onTheWayOrders,
-    deliveredOrders: deliveredOrders ?? this.deliveredOrders,
-  );
+  OrderDetailsModel copyWith({OrderDetails? orderDetails}) =>
+      OrderDetailsModel(orderDetails: orderDetails ?? this.orderDetails);
 
-  factory DeliveryOrderListModel.fromJson(Map<String, dynamic> json) =>
-      DeliveryOrderListModel(
-        onTheWayOrders: List<Order>.from(
-          json['on_the_way_orders'].map((x) => Order.fromJson(x)),
-        ),
-        deliveredOrders: List<Order>.from(
-          json['delivered_orders'].map((x) => Order.fromJson(x)),
-        ),
+  factory OrderDetailsModel.fromJson(Map<String, dynamic> json) =>
+      OrderDetailsModel(
+        orderDetails: OrderDetails.fromJson(json['order_details']),
       );
 
-  Map<String, dynamic> toJson() => {
-    'on_the_way_orders': List<dynamic>.from(
-      onTheWayOrders.map((x) => x.toJson()),
-    ),
-    'delivered_orders': List<dynamic>.from(
-      deliveredOrders.map((x) => x.toJson()),
-    ),
-  };
+  Map<String, dynamic> toJson() => {'order_details': orderDetails.toJson()};
 }
 
-class Order {
+class OrderDetails {
   final int id;
   final String userName;
   final String phoneNumber;
@@ -62,7 +41,7 @@ class Order {
   final DateTime estimatedDeliveryDate;
   final List<Item> items;
 
-  const Order({
+  const OrderDetails({
     required this.id,
     required this.userName,
     required this.phoneNumber,
@@ -76,7 +55,7 @@ class Order {
     required this.items,
   });
 
-  Order copyWith({
+  OrderDetails copyWith({
     int? id,
     String? userName,
     String? phoneNumber,
@@ -88,7 +67,7 @@ class Order {
     String? totalAmount,
     DateTime? estimatedDeliveryDate,
     List<Item>? items,
-  }) => Order(
+  }) => OrderDetails(
     id: id ?? this.id,
     userName: userName ?? this.userName,
     phoneNumber: phoneNumber ?? this.phoneNumber,
@@ -102,7 +81,7 @@ class Order {
     items: items ?? this.items,
   );
 
-  factory Order.fromJson(Map<String, dynamic> json) => Order(
+  factory OrderDetails.fromJson(Map<String, dynamic> json) => OrderDetails(
     id: json['id'],
     userName: json['user_name'],
     phoneNumber: json['phone_number'],
@@ -124,7 +103,7 @@ class Order {
     'address': address,
     'longitude': longitude,
     'order_date': orderDate.toIso8601String(),
-    'status': status.toJson(),
+    'status': status.name,
     'total_amount': totalAmount,
     'estimated_delivery_date': estimatedDeliveryDate.toIso8601String(),
     'items': List<dynamic>.from(items.map((x) => x.toJson())),

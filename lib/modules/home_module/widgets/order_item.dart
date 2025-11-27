@@ -5,6 +5,7 @@ import 'package:petcure_delivery_app/modules/home_module/models/delivery_order_l
 import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_color.dart';
 import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_icon.dart';
 import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_text.dart';
+import 'package:petcure_delivery_app/modules/order_details_module/view/order_details_page.dart';
 // import 'package:petcure_delivery_app/modules/order_details_module/view/order_details_page.dart';
 
 class OrderItem extends StatelessWidget {
@@ -26,7 +27,7 @@ class OrderItem extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        // Navigator.push(context, OrderDetailsPage.route(order: order));
+        Navigator.push(context, OrderDetailsPage.route(orderId: order.id));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),

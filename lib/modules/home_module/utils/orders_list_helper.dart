@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petcure_delivery_app/modules/home_module/cubit/order_list_cubit.dart';
-import 'package:petcure_delivery_app/modules/home_module/enums/delivery_status.dart';
+import 'package:petcure_delivery_app/core/enums/delivery_status.dart';
 
 class OrdersListHelper {
   final BuildContext context;

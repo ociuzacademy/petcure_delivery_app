@@ -1,10 +1,10 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
 import 'package:flutter/material.dart';
-import 'package:petcure_delivery_app/core/models/cart_item.dart';
+import 'package:petcure_delivery_app/modules/order_details_module/models/order_details_model.dart';
 
 class OrderProductItem extends StatelessWidget {
-  final CartItem item;
+  final Item item;
   const OrderProductItem({super.key, required this.item});
 
   @override
@@ -25,16 +25,8 @@ class OrderProductItem extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey.shade200,
               borderRadius: BorderRadius.circular(6),
-              image: item.product.imageURLs.isNotEmpty
-                  ? DecorationImage(
-                      image: NetworkImage(item.product.imageURLs.first),
-                      fit: BoxFit.cover,
-                    )
-                  : null,
             ),
-            child: item.product.imageURLs.isEmpty
-                ? const Icon(Icons.shopping_bag, color: Colors.grey)
-                : null,
+            child: const Icon(Icons.shopping_bag, color: Colors.grey),
           ),
 
           const SizedBox(width: 12),
@@ -45,7 +37,7 @@ class OrderProductItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  item.product.productName,
+                  item.productName,
                   style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -64,7 +56,7 @@ class OrderProductItem extends StatelessWidget {
 
           // Price
           Text(
-            '\u{20B9}${(item.productPrice).toStringAsFixed(2)}',
+            '\u{20B9}${double.tryParse(item.price)?.toStringAsFixed(2) ?? item.price}',
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
           ),
         ],
