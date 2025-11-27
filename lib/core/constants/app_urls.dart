@@ -8,4 +8,5 @@ class AppUrls {
 
   static const String getAgentProfileUrl = '$deliveryUrl/view_profile/';
   static const String updateProfileUrl = '$deliveryUrl/update_profile/';
+  static const String getAgentOrderListUrl = '$deliveryUrl/assigned_orders/';
 }

@@ -1,7 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:petcure_delivery_app/modules/home_module/models/delivery_order_list_model.dart';
 
-import 'package:petcure_delivery_app/core/models/order.dart';
 import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_color.dart';
 import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_icon.dart';
 import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_text.dart';

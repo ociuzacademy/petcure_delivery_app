@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petcure_delivery_app/core/theme/app_palette.dart';
-import 'package:petcure_delivery_app/modules/home_module/widgets/orders_today_widget.dart';
+import 'package:petcure_delivery_app/modules/home_module/widgets/orders_list_widget.dart';
 import 'package:petcure_delivery_app/modules/home_module/widgets/profile_widget.dart';
 import 'package:petcure_delivery_app/modules/login_module/view/login_page.dart';
 
@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    _appBodies = [const OrdersTodayWidget(), const ProfileWidget()];
+    _appBodies = [const OrdersListWidget(), const ProfileWidget()];
     super.initState();
   }
 

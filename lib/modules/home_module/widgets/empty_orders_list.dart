@@ -19,12 +19,12 @@ class EmptyOrdersList extends StatelessWidget {
             ),
             const SizedBox(height: 12),
             Text(
-              'No Orders Today',
+              'No Orders Found',
               style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
             ),
             const SizedBox(height: 6),
             Text(
-              'All orders for today have been completed',
+              'All orders have been completed',
               style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
               textAlign: TextAlign.center,
             ),

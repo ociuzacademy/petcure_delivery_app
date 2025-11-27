@@ -1,18 +1,17 @@
 // order_item.dart
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:petcure_delivery_app/core/models/order.dart';
-import 'package:petcure_delivery_app/modules/order_details_module/view/order_details_page.dart';
-
-typedef StatusColor = Color Function(OrderDeliveryStatus status);
-typedef StatusText = String Function(OrderDeliveryStatus status);
-typedef StatusIcon = IconData Function(OrderDeliveryStatus status);
+import 'package:petcure_delivery_app/modules/home_module/models/delivery_order_list_model.dart';
+import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_color.dart';
+import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_icon.dart';
+import 'package:petcure_delivery_app/modules/home_module/typedefs/get_status_text.dart';
+// import 'package:petcure_delivery_app/modules/order_details_module/view/order_details_page.dart';
 
 class OrderItem extends StatelessWidget {
   final Order order;
-  final StatusColor getStatusColor;
-  final StatusText getStatusText;
-  final StatusIcon getStatusIcon;
+  final GetStatusColor getStatusColor;
+  final GetStatusText getStatusText;
+  final GetStatusIcon getStatusIcon;
   const OrderItem({
     super.key,
     required this.order,
@@ -23,11 +22,11 @@ class OrderItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final statusColor = getStatusColor(order.orderDeliveryStatus);
+    final statusColor = getStatusColor(order.status);
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, OrderDetailsPage.route(order: order));
+        // Navigator.push(context, OrderDetailsPage.route(order: order));
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
@@ -53,7 +52,7 @@ class OrderItem extends StatelessWidget {
                 children: [
                   Expanded(
                     child: Text(
-                      'Order #${order.orderId.split('-').last}',
+                      'Order #${order.id}',
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -75,13 +74,13 @@ class OrderItem extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Icon(
-                          getStatusIcon(order.orderDeliveryStatus),
+                          getStatusIcon(order.status),
                           size: 12,
                           color: statusColor,
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          getStatusText(order.orderDeliveryStatus),
+                          getStatusText(order.status),
                           style: TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
@@ -93,7 +92,7 @@ class OrderItem extends StatelessWidget {
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    '\u{20B9}${order.totalRate.toStringAsFixed(2)}',
+                    '\u{20B9}${order.totalAmount}',
                     style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -129,33 +128,7 @@ class OrderItem extends StatelessWidget {
 
               const SizedBox(height: 6),
 
-              // Third row: Address
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Icon(
-                    Icons.location_on_outlined,
-                    size: 14,
-                    color: Colors.grey.shade600,
-                  ),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      order.address,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey.shade600,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 6),
-
-              // Fourth row: Items count and delivery date
+              // Third row: Items count and delivery date
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -168,7 +141,7 @@ class OrderItem extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Text(
-                        '${order.productsOrdered.length} item${order.productsOrdered.length > 1 ? 's' : ''}',
+                        '${order.items.length} item${order.items.length > 1 ? 's' : ''}',
                         style: TextStyle(
                           fontSize: 11,
                           color: Colors.grey.shade600,
