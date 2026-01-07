@@ -89,41 +89,43 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      body: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          switch (state) {
-            case AuthLoading _:
-              OverlayLoader.show(context, message: 'Logging out...');
-              break;
-            case LogoutSuccess _:
-              OverlayLoader.hide();
-              CustomSnackBar.showSuccess(
-                context,
-                message: 'Logged out successfully',
-              );
-              Navigator.pushAndRemoveUntil(
-                context,
-                LoginPage.route(),
-                (route) => false,
-              );
-              break;
-            case AuthError(:final errorMessage):
-              OverlayLoader.hide();
-              CustomSnackBar.showError(context, message: errorMessage);
-              break;
-            default:
-              OverlayLoader.hide();
-              break;
-          }
-        },
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            setState(() {
-              _currentPageIndex = index;
-            });
+      body: SafeArea(
+        child: BlocListener<AuthBloc, AuthState>(
+          listener: (context, state) {
+            switch (state) {
+              case AuthLoading _:
+                OverlayLoader.show(context, message: 'Logging out...');
+                break;
+              case LogoutSuccess _:
+                OverlayLoader.hide();
+                CustomSnackBar.showSuccess(
+                  context,
+                  message: 'Logged out successfully',
+                );
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  LoginPage.route(),
+                  (route) => false,
+                );
+                break;
+              case AuthError(:final errorMessage):
+                OverlayLoader.hide();
+                CustomSnackBar.showError(context, message: errorMessage);
+                break;
+              default:
+                OverlayLoader.hide();
+                break;
+            }
           },
-          children: _appBodies,
+          child: PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPageIndex = index;
+              });
+            },
+            children: _appBodies,
+          ),
         ),
       ),
       drawer: Drawer(

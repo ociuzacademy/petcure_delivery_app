@@ -69,277 +69,424 @@ class _RegisterPageState extends State<RegisterPage> {
                     break;
                 }
               },
-              child: Form(
-                key: provider.formKey,
-                child: Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: screenSize.width * 0.05,
-                      vertical: screenSize.height * 0.05,
-                    ),
-                    child: SingleChildScrollView(
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth: screenSize.width * 0.85,
+              child: SafeArea(
+                child: Stack(
+                  children: [
+                    // Background Gradient Header
+                    Container(
+                      height: screenSize.height * 0.3,
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            AppPalette.firstColor,
+                            AppPalette.secondColor,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Profile Picture Upload
-                            InkWell(
-                              onTap: () => provider.pickImage(isIdCard: false),
-                              child: CircleAvatar(
-                                radius: 50,
-                                backgroundColor: Colors.grey[300],
-                                backgroundImage: provider.profileImage != null
-                                    ? FileImage(provider.profileImage!)
-                                    : null,
-                                child: provider.profileImage == null
-                                    ? const Icon(
-                                        Icons.camera_alt,
-                                        size: 40,
-                                        color: Colors.black54,
-                                      )
-                                    : null,
-                              ),
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-                            CustomTextField(
-                              textEditingController:
-                                  provider.usernameController,
-                              validatorFunction: provider.validateFullName,
-                              labelText: 'Username',
-                              hintText: 'Enter your username',
-                              textFieldIcon: const Icon(Icons.person),
-                              focusNode: provider.fullNameFocusNode,
-                              nextFocusNode: provider.emailFocusNode,
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-                            CustomTextField(
-                              textEditingController: provider.emailController,
-                              validatorFunction: provider.validateEmail,
-                              labelText: 'Email',
-                              hintText: 'Enter your email',
-                              textFieldIcon: const Icon(Icons.email_outlined),
-                              textInputType: TextInputType.emailAddress,
-                              focusNode: provider.emailFocusNode,
-                              nextFocusNode: provider.phoneNumberFocusNode,
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-                            CustomTextField(
-                              textEditingController:
-                                  provider.phoneNumberController,
-                              validatorFunction: provider.validatePhoneNumber,
-                              labelText: 'Phone Number',
-                              hintText: 'Enter your phone number',
-                              textInputType: TextInputType.phone,
-                              textFieldIcon: const Icon(Icons.phone),
-                              focusNode: provider.phoneNumberFocusNode,
-                              nextFocusNode: provider.addressFocusNode,
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-                            CustomTextField(
-                              textEditingController: provider.addressController,
-                              validatorFunction: provider.validateAddress,
-                              labelText: 'Address',
-                              hintText: 'Enter your address',
-                              textFieldIcon: const Icon(Icons.home),
-                              isMultiline: true,
-                              focusNode: provider.addressFocusNode,
-                              nextFocusNode: provider.passwordFocusNode,
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-
-                            // City Selection Section
-                            const Row(
-                              children: [
-                                Icon(Icons.location_city, size: 20),
-                                SizedBox(width: 8),
-                                Text(
-                                  'Select City',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: screenSize.height * 0.015),
-
-                            // City Dropdown
-                            Container(
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey.shade400),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
-                                child: DropdownButtonHideUnderline(
-                                  child: DropdownButton<String>(
-                                    value: provider.selectedCity,
-                                    isExpanded: true,
-                                    hint: const Text('Select your city'),
-                                    icon: const Icon(Icons.arrow_drop_down),
-                                    items: provider.availableCities.map((
-                                      String city,
-                                    ) {
-                                      return DropdownMenuItem<String>(
-                                        value: city,
-                                        child: Text(city),
-                                      );
-                                    }).toList(),
-                                    onChanged: (String? newValue) {
-                                      provider.setSelectedCity(newValue);
-                                    },
-                                  ),
+                        borderRadius: BorderRadius.only(
+                          bottomLeft: Radius.circular(50),
+                          bottomRight: Radius.circular(50),
+                        ),
+                      ),
+                    ),
+                    SafeArea(
+                      child: SingleChildScrollView(
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: screenSize.width * 0.05,
+                          ),
+                          child: Column(
+                            children: [
+                              SizedBox(height: screenSize.height * 0.04),
+                              Text(
+                                'Create Account',
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors.black.withValues(
+                                        alpha: 0.3,
+                                      ),
+                                      offset: const Offset(0, 2),
+                                      blurRadius: 4,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-
-                            CustomTextField(
-                              textEditingController:
-                                  provider.passwordController,
-                              validatorFunction: provider.validatePassword,
-                              labelText: 'Password',
-                              hintText: 'Enter your password',
-                              textFieldIcon: const Icon(Icons.password),
-                              textInputType: TextInputType.visiblePassword,
-                              isPassword: true,
-                              focusNode: provider.passwordFocusNode,
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-
-                            // ID Card Picture Section
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Colors.grey[50],
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.grey[300]!,
-                                  width: 1,
+                              const SizedBox(height: 8),
+                              Text(
+                                'Join our delivery partner network',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white.withValues(alpha: 0.9),
                                 ),
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Row(
-                                    children: [
-                                      Icon(Icons.credit_card, size: 20),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        'ID Card Picture',
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.bold,
+                              SizedBox(height: screenSize.height * 0.03),
+                              // Profile Picture Upload
+                              GestureDetector(
+                                onTap: () =>
+                                    provider.pickImage(isIdCard: false),
+                                child: Stack(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: Colors.white,
+                                          width: 4,
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withValues(
+                                              alpha: 0.1,
+                                            ),
+                                            blurRadius: 10,
+                                            offset: const Offset(0, 5),
+                                          ),
+                                        ],
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 60,
+                                        backgroundColor: Colors.grey[200],
+                                        backgroundImage:
+                                            provider.profileImage != null
+                                            ? FileImage(provider.profileImage!)
+                                            : null,
+                                        child: provider.profileImage == null
+                                            ? Icon(
+                                                Icons.person,
+                                                size: 60,
+                                                color: Colors.grey[400],
+                                              )
+                                            : null,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: const BoxDecoration(
+                                          color: AppPalette.firstColor,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(
+                                          Icons.camera_alt,
+                                          color: Colors.white,
+                                          size: 20,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                  SizedBox(height: screenSize.height * 0.015),
-                                  Text(
-                                    'Upload a clear photo of your government-issued ID card',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Colors.grey[600],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: screenSize.height * 0.03),
+                              // Registration Form Card
+                              Card(
+                                elevation: 10,
+                                shadowColor: Colors.black.withValues(
+                                  alpha: 0.1,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(20.0),
+                                  child: Form(
+                                    key: provider.formKey,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomTextField(
+                                          textEditingController:
+                                              provider.usernameController,
+                                          validatorFunction:
+                                              provider.validateFullName,
+                                          labelText: 'Username',
+                                          hintText: 'Enter your username',
+                                          textFieldIcon: const Icon(
+                                            Icons.person,
+                                          ),
+                                          focusNode: provider.fullNameFocusNode,
+                                          nextFocusNode:
+                                              provider.emailFocusNode,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        CustomTextField(
+                                          textEditingController:
+                                              provider.emailController,
+                                          validatorFunction:
+                                              provider.validateEmail,
+                                          labelText: 'Email',
+                                          hintText: 'Enter your email',
+                                          textFieldIcon: const Icon(
+                                            Icons.email_outlined,
+                                          ),
+                                          textInputType:
+                                              TextInputType.emailAddress,
+                                          focusNode: provider.emailFocusNode,
+                                          nextFocusNode:
+                                              provider.phoneNumberFocusNode,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        CustomTextField(
+                                          textEditingController:
+                                              provider.phoneNumberController,
+                                          validatorFunction:
+                                              provider.validatePhoneNumber,
+                                          labelText: 'Phone Number',
+                                          hintText: 'Enter your phone number',
+                                          textInputType: TextInputType.phone,
+                                          textFieldIcon: const Icon(
+                                            Icons.phone,
+                                          ),
+                                          focusNode:
+                                              provider.phoneNumberFocusNode,
+                                          nextFocusNode:
+                                              provider.addressFocusNode,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        CustomTextField(
+                                          textEditingController:
+                                              provider.addressController,
+                                          validatorFunction:
+                                              provider.validateAddress,
+                                          labelText: 'Address',
+                                          hintText: 'Enter your address',
+                                          textFieldIcon: const Icon(Icons.home),
+                                          isMultiline: true,
+                                          focusNode: provider.addressFocusNode,
+                                          nextFocusNode:
+                                              provider.passwordFocusNode,
+                                        ),
+                                        const SizedBox(height: 16),
+                                        // City Dropdown
+                                        const Text(
+                                          'Select City',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(
+                                              10,
+                                            ),
+                                            border: Border.all(
+                                              color: Colors.grey.shade300,
+                                            ),
+                                            color: Colors.grey.shade50,
+                                          ),
+                                          child: DropdownButtonHideUnderline(
+                                            child: DropdownButton<String>(
+                                              value: provider.selectedCity,
+                                              isExpanded: true,
+                                              hint: const Text(
+                                                'Select your city',
+                                              ),
+                                              icon: const Icon(
+                                                Icons.arrow_drop_down,
+                                              ),
+                                              items: provider.availableCities
+                                                  .map((String city) {
+                                                    return DropdownMenuItem<
+                                                      String
+                                                    >(
+                                                      value: city,
+                                                      child: Text(city),
+                                                    );
+                                                  })
+                                                  .toList(),
+                                              onChanged: (String? newValue) {
+                                                provider.setSelectedCity(
+                                                  newValue,
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 16),
+                                        CustomTextField(
+                                          textEditingController:
+                                              provider.passwordController,
+                                          validatorFunction:
+                                              provider.validatePassword,
+                                          labelText: 'Password',
+                                          hintText: 'Enter your password',
+                                          textFieldIcon: const Icon(
+                                            Icons.lock_outline,
+                                          ),
+                                          textInputType:
+                                              TextInputType.visiblePassword,
+                                          isPassword: true,
+                                          focusNode: provider.passwordFocusNode,
+                                        ),
+                                        const SizedBox(height: 24),
+                                        // ID Card Section
+                                        Container(
+                                          width: double.infinity,
+                                          padding: const EdgeInsets.all(16),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey[50],
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            border: Border.all(
+                                              color: Colors.grey[300]!,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Row(
+                                                children: [
+                                                  Icon(
+                                                    Icons.credit_card,
+                                                    size: 20,
+                                                    color:
+                                                        AppPalette.firstColor,
+                                                  ),
+                                                  SizedBox(width: 8),
+                                                  Text(
+                                                    'ID Card Picture',
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 12),
+                                              GestureDetector(
+                                                onTap: () => provider.pickImage(
+                                                  isIdCard: true,
+                                                ),
+                                                child: Container(
+                                                  width: double.infinity,
+                                                  height: 160,
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                          12,
+                                                        ),
+                                                    border: Border.all(
+                                                      color: Colors.grey[300]!,
+                                                      style: BorderStyle.solid,
+                                                    ),
+                                                  ),
+                                                  child:
+                                                      provider.idCardImage !=
+                                                          null
+                                                      ? ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                12,
+                                                              ),
+                                                          child: Image.file(
+                                                            provider
+                                                                .idCardImage!,
+                                                            fit: BoxFit.cover,
+                                                          ),
+                                                        )
+                                                      : Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Icon(
+                                                              Icons
+                                                                  .add_a_photo_outlined,
+                                                              size: 40,
+                                                              color: Colors
+                                                                  .grey[400],
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 12,
+                                                            ),
+                                                            Text(
+                                                              'Upload ID Card photo',
+                                                              style: TextStyle(
+                                                                color: Colors
+                                                                    .grey[600],
+                                                                fontSize: 14,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(height: 32),
+                                        CustomButton(
+                                          buttonWidth: double.infinity,
+                                          backgroundColor:
+                                              AppPalette.firstColor,
+                                          textColor: Colors.white,
+                                          labelText: 'Create Account',
+                                          onClick: () => _registerHelper
+                                              .register(provider),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  SizedBox(height: screenSize.height * 0.015),
-                                  InkWell(
-                                    onTap: () =>
-                                        provider.pickImage(isIdCard: true),
-                                    child: Container(
-                                      width: double.infinity,
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey[200],
-                                        borderRadius: BorderRadius.circular(12),
-                                        border: Border.all(
-                                          color: Colors.grey[400]!,
-                                          width: 1,
-                                        ),
+                                ),
+                              ),
+                              SizedBox(height: screenSize.height * 0.04),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    'Already have an account? ',
+                                    style: TextStyle(
+                                      color: Colors.grey[600],
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pushReplacement(
+                                      context,
+                                      LoginPage.route(),
+                                    ),
+                                    child: const Text(
+                                      'Login',
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: AppPalette.firstColor,
                                       ),
-                                      child: provider.idCardImage != null
-                                          ? ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              child: Image.file(
-                                                provider.idCardImage!,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )
-                                          : Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.credit_card,
-                                                  size: 50,
-                                                  color: Colors.grey[500],
-                                                ),
-                                                const SizedBox(height: 8),
-                                                Text(
-                                                  'Tap to upload ID Card',
-                                                  style: TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.grey[600],
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
-                                                const SizedBox(height: 4),
-                                                Text(
-                                                  'PNG, JPG up to 5MB',
-                                                  style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.grey[500],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
                                     ),
                                   ),
                                 ],
                               ),
-                            ),
-                            SizedBox(height: screenSize.height * 0.025),
-
-                            CustomButton(
-                              buttonWidth: double.infinity,
-                              backgroundColor: AppPalette.firstColor,
-                              textColor: Colors.white,
-                              labelText: 'Register',
-                              onClick: () => _registerHelper.register(provider),
-                            ),
-                          ],
+                              const SizedBox(height: 24),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
+                  ],
                 ),
               ),
             );
           },
         ),
-        persistentFooterButtons: [
-          InkWell(
-            onTap: () => Navigator.pushReplacement(context, LoginPage.route()),
-            child: const Text(
-              'Login Account',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppPalette.firstColor,
-              ),
-            ),
-          ),
-        ],
-        persistentFooterAlignment: AlignmentDirectional.center,
       ),
     );
   }

@@ -106,19 +106,20 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               ],
               child: BlocBuilder<DeliveryAgentProfileCubit, DeliveryAgentProfileState>(
                 builder: (context, state) {
-                  switch (state) {
-                    case DeliveryAgentProfileLoading _:
-                    case DeliveryAgentProfileInitial _:
-                      return const CustomLoadingWidget(
-                        message: 'Fetching delivery agent profile data...',
-                      );
-                    case DeliveryAgentProfileError(:final errorMessage):
-                      return CustomErrorWidget(
+                  return switch (state) {
+                    DeliveryAgentProfileLoading _ => const CustomLoadingWidget(
+                      message: 'Fetching delivery agent profile data...',
+                    ),
+                    DeliveryAgentProfileInitial _ => const CustomLoadingWidget(
+                      message: 'Fetching delivery agent profile data...',
+                    ),
+                    DeliveryAgentProfileError(:final errorMessage) =>
+                      CustomErrorWidget(
                         onRetry: _updateProfileHelper.agentProfileInit,
                         errorMessage: errorMessage,
-                      );
-                    case DeliveryAgentProfileSuccess _:
-                      return Form(
+                      ),
+                    DeliveryAgentProfileSuccess _ => SafeArea(
+                      child: Form(
                         key: provider.formKey,
                         child: Center(
                           child: Padding(
@@ -441,8 +442,9 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                             ),
                           ),
                         ),
-                      );
-                  }
+                      ),
+                    ),
+                  };
                 },
               ),
             );

@@ -86,93 +86,191 @@ class _LoginPageState extends State<LoginPage> {
               break;
           }
         },
-        child: Form(
-          key: _formKey,
-          child: Center(
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: screenSize.width * 0.05,
-                vertical: screenSize.height * 0.05,
-              ),
-              constraints: BoxConstraints(maxWidth: screenSize.width * 0.85),
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomTextField(
-                      textEditingController: _emailController,
-                      validatorFunction: (value) {
-                        // add email validation
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your email';
-                        }
-
-                        bool emailValid = RegExp(
-                          r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                        ).hasMatch(value);
-                        if (!emailValid) {
-                          return 'Please enter a valid email';
-                        }
-
-                        return null;
-                      },
-                      labelText: 'Email',
-                      hintText: 'Enter your email',
-                      textFieldIcon: const Icon(Icons.email_outlined),
-                      textInputType: TextInputType.emailAddress,
-                      focusNode: _emailFocusNode,
-                      nextFocusNode: _passwordFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    CustomTextField(
-                      textEditingController: _passwordController,
-                      validatorFunction: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter password';
-                        }
-
-                        if (value.length < 3) {
-                          return 'Password must be at least 6 characters';
-                        }
-                        return null;
-                      },
-                      labelText: 'Password',
-                      hintText: 'Enter your password',
-                      textFieldIcon: const Icon(Icons.password),
-                      textInputType: TextInputType.visiblePassword,
-                      isPassword: true,
-                      focusNode: _passwordFocusNode,
-                    ),
-                    SizedBox(height: screenSize.height * 0.025),
-                    CustomButton(
-                      buttonWidth: double.infinity,
-                      backgroundColor: AppPalette.firstColor,
-                      textColor: AppPalette.whiteColor,
-                      labelText: 'Login',
-                      onClick: _loginHelper.login,
-                    ),
-                  ],
+        child: SafeArea(
+          child: Stack(
+            children: [
+              // Background Gradient Header
+              Container(
+                height: screenSize.height * 0.4,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [AppPalette.firstColor, AppPalette.secondColor],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(50),
+                    bottomRight: Radius.circular(50),
+                  ),
                 ),
               ),
-            ),
+              SafeArea(
+                child: SingleChildScrollView(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: screenSize.width * 0.07,
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(height: screenSize.height * 0.08),
+                        // Logo/Icon with Shadow
+                        Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.2),
+                                blurRadius: 15,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                          child: const CircleAvatar(
+                            radius: 60,
+                            backgroundColor: Colors.white,
+                            child: CircleAvatar(
+                              radius: 55,
+                              backgroundColor: AppPalette.firstColor,
+                              backgroundImage: AssetImage(
+                                'assets/icons/icon.png',
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.04),
+                        Text(
+                          'Welcome Back!',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            shadows: [
+                              Shadow(
+                                color: Colors.black.withValues(alpha: 0.3),
+                                offset: const Offset(0, 2),
+                                blurRadius: 4,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'Login to your delivery partner account',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Colors.white.withValues(alpha: 0.9),
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.05),
+                        // Login Card
+                        Card(
+                          elevation: 10,
+                          shadowColor: Colors.black.withValues(alpha: 0.1),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(24.0),
+                            child: Form(
+                              key: _formKey,
+                              child: Column(
+                                children: [
+                                  CustomTextField(
+                                    textEditingController: _emailController,
+                                    validatorFunction: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter your email';
+                                      }
+                                      bool emailValid = RegExp(
+                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
+                                      ).hasMatch(value);
+                                      if (!emailValid) {
+                                        return 'Please enter a valid email';
+                                      }
+                                      return null;
+                                    },
+                                    labelText: 'Email',
+                                    hintText: 'Enter your email',
+                                    textFieldIcon: const Icon(
+                                      Icons.email_outlined,
+                                    ),
+                                    textInputType: TextInputType.emailAddress,
+                                    focusNode: _emailFocusNode,
+                                    nextFocusNode: _passwordFocusNode,
+                                  ),
+                                  const SizedBox(height: 20),
+                                  CustomTextField(
+                                    textEditingController: _passwordController,
+                                    validatorFunction: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter password';
+                                      }
+                                      if (value.length < 3) {
+                                        return 'Password must be at least 6 characters';
+                                      }
+                                      return null;
+                                    },
+                                    labelText: 'Password',
+                                    hintText: 'Enter your password',
+                                    textFieldIcon: const Icon(
+                                      Icons.lock_outline,
+                                    ),
+                                    textInputType:
+                                        TextInputType.visiblePassword,
+                                    isPassword: true,
+                                    focusNode: _passwordFocusNode,
+                                  ),
+                                  const SizedBox(height: 30),
+                                  CustomButton(
+                                    buttonWidth: double.infinity,
+                                    backgroundColor: AppPalette.firstColor,
+                                    textColor: AppPalette.whiteColor,
+                                    labelText: 'Login',
+                                    onClick: _loginHelper.login,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: screenSize.height * 0.05),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Don't have an account? ",
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontSize: 16,
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () => Navigator.pushReplacement(
+                                context,
+                                RegisterPage.route(),
+                              ),
+                              child: const Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: AppPalette.firstColor,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),
-      persistentFooterButtons: [
-        InkWell(
-          onTap: () => Navigator.pushReplacement(context, RegisterPage.route()),
-          child: const Text(
-            'Create Account',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: AppPalette.firstColor,
-            ),
-          ),
-        ),
-      ],
-      persistentFooterAlignment: AlignmentDirectional.center,
     );
   }
 }
