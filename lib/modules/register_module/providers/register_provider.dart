@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petcure_delivery_app/core/utils/validators.dart';
 import 'package:petcure_delivery_app/modules/register_module/classes/delivery_agent_register_data.dart';
 
 class RegisterProvider with ChangeNotifier {
@@ -73,58 +74,16 @@ class RegisterProvider with ChangeNotifier {
   }
 
   // Validation methods
-  String? validateFullName(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter full name';
-    }
-    return null;
-  }
+  String? validateFullName(String? value) => Validators.name(value);
 
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter email';
-    }
+  String? validateEmail(String? value) => Validators.email(value);
 
-    bool emailValid = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-    ).hasMatch(value);
-    if (!emailValid) {
-      return 'Please enter a valid email';
-    }
+  String? validatePhoneNumber(String? value) => Validators.phone(value);
 
-    return null;
-  }
+  String? validateAddress(String? value) =>
+      Validators.required(value, 'Address');
 
-  String? validatePhoneNumber(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter phone number';
-    }
-
-    bool phoneValid = RegExp(r'^(\+91[\-\s]?)?[6-9]\d{9}$').hasMatch(value);
-    if (!phoneValid) {
-      return 'Please enter a valid phone number';
-    }
-
-    return null;
-  }
-
-  String? validateAddress(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please add your address';
-    }
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter password';
-    }
-
-    if (value.length < 3) {
-      return 'Password must be at least 6 characters';
-    }
-    return null;
-  }
+  String? validatePassword(String? value) => Validators.password(value);
 
   void unfocusAll() {
     fullNameFocusNode.unfocus();

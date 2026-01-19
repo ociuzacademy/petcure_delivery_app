@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petcure_delivery_app/core/utils/validators.dart';
 import 'package:petcure_delivery_app/core/models/api_models/delivery_agent_profile_model.dart';
 import 'package:petcure_delivery_app/modules/update_profile_module/classes/update_agent_profile_data.dart';
 
@@ -77,58 +78,16 @@ class UpdateProfileProvider with ChangeNotifier {
   }
 
   // Validation methods
-  String? validateFullName(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter full name';
-    }
-    return null;
-  }
+  String? validateFullName(String? value) => Validators.name(value);
 
-  String? validateEmail(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter email';
-    }
+  String? validateEmail(String? value) => Validators.email(value);
 
-    bool emailValid = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-    ).hasMatch(value);
-    if (!emailValid) {
-      return 'Please enter a valid email';
-    }
+  String? validatePhoneNumber(String? value) => Validators.phone(value);
 
-    return null;
-  }
+  String? validateAddress(String? value) =>
+      Validators.required(value, 'Address');
 
-  String? validatePhoneNumber(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter phone number';
-    }
-
-    bool phoneValid = RegExp(r'^(\+91[\-\s]?)?[6-9]\d{9}$').hasMatch(value);
-    if (!phoneValid) {
-      return 'Please enter a valid phone number';
-    }
-
-    return null;
-  }
-
-  String? validateAddress(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please add your address';
-    }
-    return null;
-  }
-
-  String? validatePassword(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please enter password';
-    }
-
-    if (value.length < 3) {
-      return 'Password must be at least 6 characters';
-    }
-    return null;
-  }
+  String? validatePassword(String? value) => Validators.password(value);
 
   void unfocusAll() {
     fullNameFocusNode.unfocus();
@@ -143,37 +102,19 @@ class UpdateProfileProvider with ChangeNotifier {
     return formKey.currentState?.validate() ?? false;
   }
 
-  // delivery agent register data
+  // delivery agent update profile data
   UpdateAgentProfileData? validateUpdateProfileData() {
     unfocusAll();
-    if (validateForm()) {
+    // If form is NOT valid, return null
+    if (!(formKey.currentState?.validate() ?? false)) {
       return null;
     }
 
     final String username = usernameController.text.trim();
-    if (username.isEmpty) {
-      return null;
-    }
-
     final String email = emailController.text.trim();
-    if (email.isEmpty) {
-      return null;
-    }
-
     final String phoneNumber = phoneNumberController.text.trim();
-    if (phoneNumber.isEmpty) {
-      return null;
-    }
-
     final String password = passwordController.text.trim();
-    if (password.isEmpty) {
-      return null;
-    }
-
     final String address = addressController.text.trim();
-    if (address.isEmpty) {
-      return null;
-    }
 
     return UpdateAgentProfileData(
       address: address != _agentProfile!.address ? address : null,

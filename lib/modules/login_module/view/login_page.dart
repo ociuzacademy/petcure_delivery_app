@@ -5,6 +5,7 @@ import 'package:petcure_delivery_app/core/theme/app_palette.dart';
 import 'package:petcure_delivery_app/modules/home_module/view/home_page.dart';
 import 'package:petcure_delivery_app/modules/login_module/utils/login_helper.dart';
 import 'package:petcure_delivery_app/modules/register_module/view/register_page.dart';
+import 'package:petcure_delivery_app/core/utils/validators.dart';
 import 'package:petcure_delivery_app/widgets/buttons/custom_button.dart';
 import 'package:petcure_delivery_app/widgets/loaders/overlay_loader.dart';
 import 'package:petcure_delivery_app/widgets/snackbars/custom_snack_bar.dart';
@@ -178,18 +179,7 @@ class _LoginPageState extends State<LoginPage> {
                                 children: [
                                   CustomTextField(
                                     textEditingController: _emailController,
-                                    validatorFunction: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter your email';
-                                      }
-                                      bool emailValid = RegExp(
-                                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+",
-                                      ).hasMatch(value);
-                                      if (!emailValid) {
-                                        return 'Please enter a valid email';
-                                      }
-                                      return null;
-                                    },
+                                    validatorFunction: Validators.email,
                                     labelText: 'Email',
                                     hintText: 'Enter your email',
                                     textFieldIcon: const Icon(
@@ -202,15 +192,7 @@ class _LoginPageState extends State<LoginPage> {
                                   const SizedBox(height: 20),
                                   CustomTextField(
                                     textEditingController: _passwordController,
-                                    validatorFunction: (value) {
-                                      if (value == null || value.isEmpty) {
-                                        return 'Please enter password';
-                                      }
-                                      if (value.length < 3) {
-                                        return 'Password must be at least 6 characters';
-                                      }
-                                      return null;
-                                    },
+                                    validatorFunction: Validators.password,
                                     labelText: 'Password',
                                     hintText: 'Enter your password',
                                     textFieldIcon: const Icon(

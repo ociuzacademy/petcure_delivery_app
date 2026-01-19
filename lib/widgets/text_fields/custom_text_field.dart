@@ -52,7 +52,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(widget.labelText, style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          widget.labelText,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 4),
         TextFormField(
           controller: widget.textEditingController,
@@ -99,6 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           maxLines: widget.isMultiline ? 3 : 1,
           obscureText: isObscured,
           onChanged: widget.onChange,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
         ),
       ],
     );
