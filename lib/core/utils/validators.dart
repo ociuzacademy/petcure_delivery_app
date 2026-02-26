@@ -1,3 +1,5 @@
+import 'package:petcure_delivery_app/core/models/place_model.dart';
+
 class Validators {
   /// Validates an email address.
   static String? email(String? value) {
@@ -68,6 +70,14 @@ class Validators {
   static String? required(String? value, String fieldName) {
     if (value == null || value.trim().isEmpty) {
       return '$fieldName is required';
+    }
+    return null;
+  }
+
+  /// Validates that a place is selected.
+  static String? place(PlaceModel? place) {
+    if (place == null) {
+      return 'Place is required';
     }
     return null;
   }

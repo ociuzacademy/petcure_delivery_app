@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:io';
 
+import 'package:petcure_delivery_app/core/models/place_model.dart';
+
 class UpdateAgentProfileData {
   final String? username;
   final String? email;
@@ -9,6 +11,7 @@ class UpdateAgentProfileData {
   final String? address;
   final File? profileImage;
   final File? idCardImage;
+  final PlaceModel? place;
   const UpdateAgentProfileData({
     this.username,
     this.email,
@@ -17,6 +20,7 @@ class UpdateAgentProfileData {
     this.address,
     this.profileImage,
     this.idCardImage,
+    this.place,
   });
 
   UpdateAgentProfileData copyWith({
@@ -27,6 +31,7 @@ class UpdateAgentProfileData {
     String? address,
     File? profileImage,
     File? idCardImage,
+    PlaceModel? place,
   }) {
     return UpdateAgentProfileData(
       username: username ?? this.username,
@@ -36,6 +41,7 @@ class UpdateAgentProfileData {
       address: address ?? this.address,
       profileImage: profileImage ?? this.profileImage,
       idCardImage: idCardImage ?? this.idCardImage,
+      place: place ?? this.place,
     );
   }
 
@@ -47,7 +53,8 @@ class UpdateAgentProfileData {
       password == null ||
       address == null ||
       profileImage == null ||
-      idCardImage == null;
+      idCardImage == null ||
+      place == null;
 
   /// Returns true only if all properties are null.
   bool isAllNull() =>
@@ -57,7 +64,8 @@ class UpdateAgentProfileData {
       password == null &&
       address == null &&
       profileImage == null &&
-      idCardImage == null;
+      idCardImage == null &&
+      place == null;
 
   /// Returns true when none of the properties are null.
   bool isComplete() =>
@@ -67,7 +75,8 @@ class UpdateAgentProfileData {
       password != null &&
       address != null &&
       profileImage != null &&
-      idCardImage != null;
+      idCardImage != null &&
+      place != null;
 
   @Deprecated(
     'Use isAnyNull() instead. This will be removed in a future release.',

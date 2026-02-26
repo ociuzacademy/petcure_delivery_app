@@ -24,7 +24,7 @@ class RegisterServices {
       request.fields['password'] = deliveryAgentRegisterData.password;
       request.fields['address'] = deliveryAgentRegisterData.address;
       request.fields['phone'] = deliveryAgentRegisterData.phoneNumber;
-      request.fields['city'] = deliveryAgentRegisterData.city;
+      request.fields['place'] = deliveryAgentRegisterData.place.placeValue;
 
       var profileImageStream = http.ByteStream(
         deliveryAgentRegisterData.profileImage.openRead(),
@@ -65,7 +65,7 @@ class RegisterServices {
       // Convert the response stream to a string
       final responseBody = await resp.stream.bytesToString();
 
-      if (resp.statusCode == 200) {
+      if (resp.statusCode == 201) {
         final dynamic decoded = jsonDecode(responseBody);
         final DeliveryRegistrationResponseModel response =
             DeliveryRegistrationResponseModel.fromJson(decoded);

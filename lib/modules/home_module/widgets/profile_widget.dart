@@ -136,8 +136,8 @@ class _ProfileWidgetState extends State<ProfileWidget> {
                         ProfileInfoRow(
                           icon: Icons.location_on,
                           iconColor: Colors.red,
-                          label: 'City:',
-                          value: agentProfileData.city,
+                          label: 'Place:',
+                          value: agentProfileData.placeDisplay,
                         ),
 
                         const SizedBox(height: 8),

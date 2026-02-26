@@ -3,12 +3,16 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petcure_delivery_app/core/models/place_model.dart';
+import 'package:petcure_delivery_app/core/utils/place_utils.dart';
 import 'package:petcure_delivery_app/core/utils/validators.dart';
 import 'package:petcure_delivery_app/modules/register_module/classes/delivery_agent_register_data.dart';
 
 class RegisterProvider with ChangeNotifier {
   // Form key
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  final List<PlaceModel> places = PlaceUtils.getPlaces();
 
   // Text controllers
   final TextEditingController usernameController = TextEditingController();
@@ -28,15 +32,13 @@ class RegisterProvider with ChangeNotifier {
   File? _profileImage;
   File? _idCardImage;
 
-  // City selection
-  String? _selectedCity;
-  static const List<String> cities = ['Thrissur', 'Palakkad', 'Ernakulam'];
+  // Place selection
+  PlaceModel? _selectedPlace;
 
   // Getters
   File? get profileImage => _profileImage;
   File? get idCardImage => _idCardImage;
-  String? get selectedCity => _selectedCity;
-  List<String> get availableCities => cities;
+  PlaceModel? get selectedPlace => _selectedPlace;
 
   // Setters
   void setProfileImage(File? image) {
@@ -49,8 +51,8 @@ class RegisterProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void setSelectedCity(String? city) {
-    _selectedCity = city;
+  void setSelectedPlace(PlaceModel? place) {
+    _selectedPlace = place;
     notifyListeners();
   }
 
@@ -85,6 +87,8 @@ class RegisterProvider with ChangeNotifier {
 
   String? validatePassword(String? value) => Validators.password(value);
 
+  String? validatePlace(PlaceModel? place) => Validators.place(place);
+
   void unfocusAll() {
     fullNameFocusNode.unfocus();
     emailFocusNode.unfocus();
@@ -105,9 +109,9 @@ class RegisterProvider with ChangeNotifier {
         phoneNumberController.text.isNotEmpty &&
         passwordController.text.isNotEmpty &&
         addressController.text.isNotEmpty &&
-        _selectedCity != null &&
         _profileImage != null &&
-        _idCardImage != null;
+        _idCardImage != null &&
+        _selectedPlace != null;
   }
 
   // delivery agent register data
@@ -120,9 +124,9 @@ class RegisterProvider with ChangeNotifier {
         phoneNumber: phoneNumberController.text.trim(),
         password: passwordController.text.trim(),
         address: addressController.text.trim(),
-        city: _selectedCity!,
         profileImage: _profileImage!,
         idCardImage: _idCardImage!,
+        place: _selectedPlace!,
       );
     } else {
       return null;
@@ -138,7 +142,7 @@ class RegisterProvider with ChangeNotifier {
     addressController.clear();
     _profileImage = null;
     _idCardImage = null;
-    _selectedCity = null;
+    _selectedPlace = null;
     notifyListeners();
   }
 

@@ -5,10 +5,12 @@ import 'package:petcure_delivery_app/modules/register_module/utils/register_help
 import 'package:petcure_delivery_app/widgets/loaders/overlay_loader.dart';
 import 'package:petcure_delivery_app/widgets/snackbars/custom_snack_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:petcure_delivery_app/core/models/place_model.dart';
 import 'package:petcure_delivery_app/core/theme/app_palette.dart';
 import 'package:petcure_delivery_app/modules/login_module/view/login_page.dart';
 import 'package:petcure_delivery_app/modules/register_module/providers/register_provider.dart';
 import 'package:petcure_delivery_app/widgets/buttons/custom_button.dart';
+import 'package:petcure_delivery_app/widgets/labelled_dropdown.dart';
 import 'package:petcure_delivery_app/widgets/text_fields/custom_text_field.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -265,57 +267,20 @@ class _RegisterPageState extends State<RegisterPage> {
                                               provider.passwordFocusNode,
                                         ),
                                         const SizedBox(height: 16),
-                                        // City Dropdown
-                                        const Text(
-                                          'Select City',
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey,
+                                        // Place Dropdown
+                                        LabelledDropdown<PlaceModel>(
+                                          value: provider.selectedPlace,
+                                          items: provider.places,
+                                          labelText: 'Select Place',
+                                          hintText: 'Select your place',
+                                          prefixIcon: const Icon(
+                                            Icons.location_on_outlined,
                                           ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          width: double.infinity,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(
-                                              10,
-                                            ),
-                                            border: Border.all(
-                                              color: Colors.grey.shade300,
-                                            ),
-                                            color: Colors.grey.shade50,
-                                          ),
-                                          child: DropdownButtonHideUnderline(
-                                            child: DropdownButton<String>(
-                                              value: provider.selectedCity,
-                                              isExpanded: true,
-                                              hint: const Text(
-                                                'Select your city',
-                                              ),
-                                              icon: const Icon(
-                                                Icons.arrow_drop_down,
-                                              ),
-                                              items: provider.availableCities
-                                                  .map((String city) {
-                                                    return DropdownMenuItem<
-                                                      String
-                                                    >(
-                                                      value: city,
-                                                      child: Text(city),
-                                                    );
-                                                  })
-                                                  .toList(),
-                                              onChanged: (String? newValue) {
-                                                provider.setSelectedCity(
-                                                  newValue,
-                                                );
-                                              },
-                                            ),
-                                          ),
+                                          validator: provider.validatePlace,
+                                          onChanged: provider.setSelectedPlace,
+                                          itemLabelBuilder:
+                                              (PlaceModel place) =>
+                                                  place.displayName,
                                         ),
                                         const SizedBox(height: 16),
                                         CustomTextField(

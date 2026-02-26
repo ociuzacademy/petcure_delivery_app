@@ -3,6 +3,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:petcure_delivery_app/core/models/place_model.dart';
+import 'package:petcure_delivery_app/core/utils/place_utils.dart';
 import 'package:petcure_delivery_app/core/utils/validators.dart';
 import 'package:petcure_delivery_app/core/models/api_models/delivery_agent_profile_model.dart';
 import 'package:petcure_delivery_app/modules/update_profile_module/classes/update_agent_profile_data.dart';
@@ -10,6 +12,8 @@ import 'package:petcure_delivery_app/modules/update_profile_module/classes/updat
 class UpdateProfileProvider with ChangeNotifier {
   // Form key
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  final List<PlaceModel> places = PlaceUtils.getPlaces();
 
   DeliveryAgentProfileModel? _agentProfile;
 
@@ -31,10 +35,13 @@ class UpdateProfileProvider with ChangeNotifier {
   File? _profileImage;
   File? _idCardImage;
 
+  PlaceModel? _selectedPlace;
+
   // Getters
   DeliveryAgentProfileModel? get agentProfile => _agentProfile;
   File? get profileImage => _profileImage;
   File? get idCardImage => _idCardImage;
+  PlaceModel? get selectedPlace => _selectedPlace;
 
   // Setters
 
@@ -48,13 +55,23 @@ class UpdateProfileProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setSelectedPlace(PlaceModel? place) {
+    _selectedPlace = place;
+    notifyListeners();
+  }
+
   void setProfileDataFromApi(DeliveryAgentProfileModel value) {
     _agentProfile = value;
     usernameController.text = value.username;
     emailController.text = value.email;
     phoneNumberController.text = value.phone;
-    passwordController.text = value.password;
     addressController.text = value.address;
+    setSelectedPlace(
+      places.firstWhere(
+        (place) => place.placeValue == value.place,
+        orElse: () => places.first,
+      ),
+    );
     notifyListeners();
   }
 
@@ -89,6 +106,8 @@ class UpdateProfileProvider with ChangeNotifier {
 
   String? validatePassword(String? value) => Validators.password(value);
 
+  String? validatePlace(PlaceModel? value) => Validators.place(value);
+
   void unfocusAll() {
     fullNameFocusNode.unfocus();
     emailFocusNode.unfocus();
@@ -120,8 +139,11 @@ class UpdateProfileProvider with ChangeNotifier {
       address: address != _agentProfile!.address ? address : null,
       email: email != _agentProfile!.email ? email : null,
       idCardImage: _idCardImage,
-      password: password != _agentProfile!.password ? password : null,
+      password: password.isNotEmpty ? password : null,
       phoneNumber: phoneNumber != _agentProfile!.phone ? phoneNumber : null,
+      place: _selectedPlace?.placeValue != _agentProfile!.place
+          ? _selectedPlace
+          : null,
       profileImage: _profileImage,
       username: username != _agentProfile!.username ? username : null,
     );
@@ -136,6 +158,7 @@ class UpdateProfileProvider with ChangeNotifier {
     addressController.clear();
     _profileImage = null;
     _idCardImage = null;
+    _selectedPlace = null;
     notifyListeners();
   }
 

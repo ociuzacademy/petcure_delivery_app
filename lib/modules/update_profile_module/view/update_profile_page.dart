@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petcure_delivery_app/core/models/place_model.dart';
 import 'package:petcure_delivery_app/widgets/custom_error_widget.dart';
 import 'package:petcure_delivery_app/widgets/loaders/custom_loading_widget.dart';
+import 'package:petcure_delivery_app/widgets/labelled_dropdown.dart';
 import 'package:provider/provider.dart';
 
 import 'package:petcure_delivery_app/core/exports/bloc_exports.dart';
@@ -209,21 +211,22 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
                                     ),
                                     SizedBox(height: screenSize.height * 0.025),
 
-                                    // City Selection Section
-                                    const Row(
-                                      children: [
-                                        Icon(Icons.location_city, size: 20),
-                                        SizedBox(width: 8),
-                                        Text(
-                                          'Select City',
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
+                                    LabelledDropdown<PlaceModel>(
+                                      value: provider.selectedPlace,
+                                      items: provider.places,
+                                      labelText: 'Select Place',
+                                      hintText: 'Select your place',
+                                      prefixIcon: const Icon(
+                                        Icons.location_on_outlined,
+                                      ),
+                                      validator: provider.validatePlace,
+                                      onChanged: (PlaceModel? value) {
+                                        provider.setSelectedPlace(value);
+                                      },
+                                      itemLabelBuilder: (PlaceModel place) =>
+                                          place.displayName,
                                     ),
-                                    SizedBox(height: screenSize.height * 0.015),
+                                    SizedBox(height: screenSize.height * 0.025),
 
                                     CustomTextField(
                                       textEditingController:

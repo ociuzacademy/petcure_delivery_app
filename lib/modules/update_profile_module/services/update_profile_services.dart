@@ -45,6 +45,10 @@ class UpdateProfileServices {
         request.fields['phone'] = updateAgentProfileData.phoneNumber!;
       }
 
+      if (updateAgentProfileData.place != null) {
+        request.fields['place'] = updateAgentProfileData.place!.placeValue;
+      }
+
       if (updateAgentProfileData.profileImage != null) {
         var profileImageStream = http.ByteStream(
           updateAgentProfileData.profileImage!.openRead(),
